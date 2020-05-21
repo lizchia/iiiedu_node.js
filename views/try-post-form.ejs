@@ -1,0 +1,38 @@
+<%- include('parts/html-header.ejs')%>
+<%- include('parts/navbar.ejs')%>
+<div class="container">
+<form method="post">
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" name="email">
+        <% if(typeof email !== "undefined"){ %>
+        <small>上次輸入:<%= email %></small>
+        <% } %>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password">
+        <% if (locals.password) { %>
+            <small>上次輸入:<%= password %></small>
+        <% } %>
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    <div id="info"></div>
+        <button  onclick="goAjax()">Go Ajax</button>
+
+</div>
+<%- include('parts/script.ejs')%>
+<script>
+    function goAjax(){
+        $.post('/try-json-post',$('form').serialize(),function(data){
+            document.querySelector('#info').innerHTML=data;
+        },'text');
+    }
+</script>
+
+<%- include('parts/html-footer.ejs')%>

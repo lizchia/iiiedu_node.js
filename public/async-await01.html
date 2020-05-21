@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="info">
+    <p>123</p>
+</div>
+<script>
+
+     function func () {
+         return new Promise((resolve,reject)=>{
+             setTimeout(function () {
+                 resolve(Math.random())
+             })
+         },3000)
+     }
+     async function doSth() {
+        const ar =[];
+        ar.push(await func(600));
+         ar.push(await func(700));
+         ar.push(await func(800));
+         return(ar);
+     }
+     let br = [];
+     (async ()=>{
+         br = await doSth()
+         console.log('br:', br);
+     })();
+     // doSth()
+     // .then( a=>{
+     //     info.innerHTML= JSON.stringify(a)})
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+</head>
+
+<body>
+  <div class="container">
+      <form name="form1">
+          <div class="form-group">
+              <input type="file" class="form-control" id="avatar" name="avatar">
+          </div>
+      </form>
+  </div>
+<img src="" alt="" id="myimg">
+    
+    <script src="js/jquery-3.5.1.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.js"></script>
+<script>
+    let avatar = $('#avatar');
+    avatar.on('change',function(){
+        const fd = new FormData(document.form1);
+        fetch('/try-upload2',{
+            method:'POST',
+            body:fd
+        })
+        .then(r=>r.json())
+        .then(obj=>{
+            $('#myimg').attr('src','/img-uploads/'+obj.filename)
+        })
+    })
+</script>
+
+</body>
+
+</html>
