@@ -1,0 +1,85 @@
+<%- include('../parts/html-header')%>
+<%- include('../parts/navbar')%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+
+                <div class="card-body">
+                    <div id="infobar" class="alert alert-primary" role="alert" style="display: none"></div>
+                    <div class="card">
+                    <h5 class="card-title">新增資料</h5>
+
+                    <form name="form1" onsubmit="return checkForm()">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile">Mobile</label>
+                            <input type="text" class="form-control" id="mobile" name="mobile"
+                                   pattern="09\d{2}-?\d{3}-?\d{3}">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">Birthday</label>
+                            <input type="text" class="form-control" id="birthday" name="birthday">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea class="form-control" id="address" name="address"
+                                      cols="30" rows="3" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../parts/script')%>
+<script>
+    const infobar = $('#infobar');
+
+    function checkForm() {
+        infobar.hide();
+        const fd=new FormData(document.form1);
+        fetch('/address_book/add',{
+            method:'post',
+            body:fd
+        })
+        .then(r=>r.json())
+        .then(obj=>{
+            console.log(obj);
+            if(obj.success){
+                infobar
+                    .removeClass('alert-danger')
+                    .addClass('alert-primary')
+                    .text('success!');
+                 setTimeout(()=>{
+                     // location.href = location.href;
+                     location.reload();
+                 }, 1000);
+            }else{
+                infobar
+                    .removeClass('alert-primary')
+                    .addClass('alert-danger')
+                    .text('fail!');
+                 setTimeout(()=>{
+                     // location.href = location.href;
+                     location.reload();
+                 }, 1000);
+            }
+            infobar.show();
+
+        })
+        return false;
+    }
+</script>
+<%- include('../parts/html-footer')%>

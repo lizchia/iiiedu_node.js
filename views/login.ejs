@@ -1,0 +1,71 @@
+<%- include('parts/html-header.ejs')%>
+<%- include('parts/navbar.ejs')%>
+<div class="container">
+    <%if(sess.user){%>
+        <h2><%= sess.user.nickname%>, Hello</h2>
+    <p><a href="/logout">log out</a></p>
+    <%}else{%>
+
+<form name="form1" method="post" onsubmit="return goFam()">
+    <div id="infobar" class="alert alert-primary" role="alert" style="display: none">
+
+    </div>
+    <div class="form-group">
+        <label for="account">account</label>
+        <input type="text" class="form-control" id="account" name="account">
+
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password">
+
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    <%}%>
+
+</div>
+<%- include('parts/script.ejs')%>
+<script>
+    const infobar = $('#infobar');
+    function goFam(){
+        infobar.hide();
+        const fd = new FormData(document.form1);
+        fetch('/login',{
+            method:'POST',
+            body: fd
+        })
+        .then(r=>r.json())
+        .then(obj=>{
+            console.log(obj);
+            if(obj.success){
+                infobar
+                .removeClass('alert-danger')
+                .addClass('alert-primary')
+                .text('success!');
+                setTimeout(()=>{
+                    // location.href = location.href;
+                    location.reload();
+                }, 1000);
+            }else{
+                infobar
+                .removeClass('alert-primary')
+                .addClass('alert-danger')
+                .text('fail!');
+                setTimeout(()=>{
+                    // location.href = location.href;
+                    location.reload();
+                }, 1000);
+            }
+            infobar.show();
+
+        })
+        return false;
+    }
+</script>
+
+<%- include('parts/html-footer.ejs')%>
